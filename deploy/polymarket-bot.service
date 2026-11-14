@@ -1,0 +1,42 @@
+[Unit]
+# Supervisión del bot en un VPS. systemd lo reinicia si el proceso muere
+# (OOM, excepción de arranque, reboot) — el loop ya sobrevive a fallos de ciclo,
+# esto cubre la muerte del proceso entero.
+Description=polymarket-bot (paper trading)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+
+# --- Ajusta estos cuatro a tu VPS ---
+User=juan
+Group=juan
+WorkingDirectory=/mnt/data/polymarket-bot
+ExecStart=/mnt/data/polymarket-bot/venv/bin/python main.py --mode paper
+# WorkingDirectory debe ser la raíz del proyecto para que load_dotenv() encuentre .env.
+
+# Reinicio automático ante cualquier caída. RestartSec evita un bucle de
+# reinicios agresivo si el fallo es inmediato (p. ej. .env mal configurado).
+Restart=always
+RestartSec=10
+# Si crashea >5 veces en 5 min, systemd se rinde (evita martillear la API/RPC).
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+# main.py atrapa SIGTERM y para el scanner ordenadamente; le damos margen.
+KillSignal=SIGTERM
+TimeoutStopSec=30
+
+# Logs van a stdout -> journald. Velos con: journalctl -u polymarket-bot -f
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=polymarket-bot
+
+# Endurecimiento básico (paper no necesita escribir fuera del proyecto).
+NoNewPrivileges=true
+ProtectSystem=full
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

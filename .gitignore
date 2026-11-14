@@ -1,0 +1,14 @@
+# Lo que NO entra, y por qué:
+#
+#   .env         credenciales de producción — la clave de la cartera y el token
+#                de Telegram. No se trajeron del servidor y no se traen nunca.
+#   *.db         la base son 7,4 GB de datos de mercado. Vive en el VPS; aquí se
+#                versiona el CÓDIGO, que es lo que no tenía copia.
+#   venv/        216 MB regenerables desde requirements.txt.
+.env
+*.db
+*.db-wal
+*.db-shm
+venv/
+__pycache__/
+*.pyc

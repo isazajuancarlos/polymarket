@@ -1,0 +1,31 @@
+# --- Core ---
+python-dotenv
+requests
+websockets
+aiohttp
+
+# --- Polymarket CLOB ---
+py-clob-client
+
+# --- Wallet on-chain (Polygon): allowances y balances de USDC ---
+web3
+eth-account
+
+# --- Base de datos ---
+# SQLite viene incluido en la stdlib de Python; no requiere driver extra.
+SQLAlchemy
+alembic
+# psycopg2-binary==2.9.9   # descomenta solo si migras DATABASE_URL a PostgreSQL
+
+# --- Telegram ---
+python-telegram-bot
+
+# --- IA (modelo de probabilidad opcional) ---
+anthropic
+
+# --- Utilidades numéricas ---
+numpy
+
+# --- Testing ---
+pytest
+pytest-asyncio
